@@ -1,0 +1,12 @@
+<opt>
+  <owfs>
+    <dir>/mnt/1wire</dir>
+  </owfs>
+  <owfs_or_owserver>OWFS</owfs_or_owserver>
+  <owserver>
+    <host>localhost</host>
+    <port>4304</port>
+    <scale>-C</scale>
+    <warnings>-v</warnings>
+  </owserver>
+</opt>
