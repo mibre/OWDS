@@ -22,7 +22,7 @@
     adding it to crontab would be a good idea!
   There are four different parts to the suite;
   Collector - the program that collects the data and adds measurements to the DB
-  Presenter [TBD] - A command line program that lets you look at the data in the DB
+  Presenter - A command line program that lets you look at the data in the DB
   Setup - A program that lets you configure the system according 
                  to your 1wire network, adding devices to log from etc.
   Web [TBD] - A web config and data viewing tool.

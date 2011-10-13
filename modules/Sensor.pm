@@ -7,7 +7,7 @@ use warnings;
 use Exporter;
 our @ISA = qw(Exporter);
 my %family_data = (
- '1D' => ['temperature', 'power'],
+ '1D' => ['counters.A', 'counters.B'],
  '10' => ['temperature', 'power'],
  '12' => ['sensed.A', 'sensed.B', 'PIO.A', 'PIO.B', 'power'],
  '29' => ['sensed.0', 'sensed.1', 'sensed.2', 'sensed.3', 'sensed.4', 'sensed.5', 'sensed.6', 'sensed.7', 'PIO.0', 'PIO.1', 'PIO.2', 'PIO.3', 'PIO.4', 'PIO.5', 'PIO.6', 'PIO.7', 'power'],
@@ -26,7 +26,9 @@ my %family_data = (
 
    my %values = ();
    foreach (@{$family_data{$family}}) {
-     $values{$_}=read_value($owserver,$ow_id,$_);
+    my $key = $_;
+    $key =~ s/\./_/g;
+    $values{$key}=read_value($owserver,$ow_id,$_);
    }
    return %values;
   }

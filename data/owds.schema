@@ -1,0 +1,42 @@
+CREATE TABLE sqlite_sequence(name,seq);
+CREATE TABLE sensors (
+    "name" TEXT,
+    "type_id" INTEGER,
+    "description" TEXT,
+    "location" TEXT,
+    "date_added" TEXT,
+    "one_wire_id" TEXT NOT NULL,
+    "family" INTEGER,
+    "bus_order" INTEGER
+);
+CREATE TABLE sensor_data (
+    "sensor_id" INTEGER NOT NULL,
+    "sensor_data_time" TEXT NOT NULL,
+    "power" INTEGER,
+    "sensed_A" INTEGER,
+    "sensed_B" INTEGER,
+    "counters_A" INTEGER,
+    "counters_B" INTEGER,
+    "counters_A_new" INTEGER,
+    "counters_B_new" INTEGER,
+    "temperature" REAL,
+    "sensed_0" INTEGER,
+    "sensed_1" INTEGER,
+    "sensed_2" INTEGER,
+    "sensed_3" INTEGER,
+    "sensed_4" INTEGER,
+    "sensed_5" INTEGER,
+    "sensed_6" INTEGER,
+    "sensed_7" INTEGER,
+    "PIO_A" INTEGER,
+    "PIO_B" INTEGER,
+    "PIO_0" INTEGER,
+    "PIO_1" INTEGER,
+    "PIO_2" INTEGER,
+    "PIO_3" INTEGER,
+    "PIO_4" INTEGER,
+    "PIO_5" INTEGER,
+    "PIO_6" INTEGER,
+    "PIO_7" INTEGER,
+    "current" REAL
+);

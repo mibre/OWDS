@@ -9,12 +9,12 @@ use modules::Sensor;
 use modules::OwDB;
 
 # Connection to SQLite DB file
-my $dbfile = "./owds.db";
+my $dbfile = "./data/owds.db";
 my $dsn = "dbi:SQLite:dbname=$dbfile";
 my $user = "";
 my $pwd = "";
 my $dbh = DBI->connect($dsn, $user, $pwd);
-my $xml_config = XMLin('settings.xml');
+my $xml_config = XMLin('configuration/settings.xml');
 my $sensor_count = 0, $new_sensor_count=0;
 
 print "####################################\n";

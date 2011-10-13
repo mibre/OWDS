@@ -10,9 +10,9 @@ use XML::Simple;
 use FindBin;                 # locate this script
 use lib "$FindBin::Bin";
 use modules::Sensor;
-
+use modules::OwDB;
 # Read Program Settings
-my $conf = XMLin('settings.xml');
+my $conf = XMLin('configuration/settings.xml');
 
 # Create owserver object
 my $ownet_host = $conf->{owserver}->{host};
@@ -30,7 +30,7 @@ if (lc $conf->{owfs_or_owserver} eq "owfs") {
 }
 
 # Connection to SQLite DB file
-my $dbfile = "./owds.db";
+my $dbfile = "./data/owds.db";
 my $dsn = "dbi:SQLite:dbname=$dbfile";
 my $user = "";
 my $pwd = "";
@@ -51,15 +51,29 @@ while ( $query_handle->fetch() ) {
 	print "Adding values for sensor $ow_id\n";
   my $columns = "";
   my $values = "";
+  my $nothing_new = 0;
   foreach my $column (keys %sensor_values) {
    if ( $column ne "" ) {
      my $separator = $columns ne "" ? ", " : "";
-     $columns = $columns . $separator . "\"$column\""; 
+     $columns = $columns . $separator . $column; 
      $values = $values . $separator . $sensor_values{$column}; 
+     if( $column =~ m/counters/) {
+      my $sql = "select $column from sensor_data where sensor_id = '$ow_id' order by sensor_data_time asc";
+      my $previous = OwDB::get_single_value($sql);
+      print "Previous countervalue: $previous\n";
+      my $current = $sensor_values{$column};
+      $previous = $current-1 if $previous eq 'apa';
+      my $new = $current-$previous;
+      $new = $current if ($current < $previous);
+#      $columns = $columns . $separator . "\"" . $column . "_new\"";
+      $columns = $columns . "," . $column . "_new";
+      $values = $values . "," . $new;
+      $nothing_new = $new < 1;
+     }
    }
   }
   my $sql = "insert into sensor_data (sensor_id, $columns, sensor_data_time) values (\"$ow_id\", $values, current_timestamp)";
-  $dbh->do($sql);	
+  $dbh->do($sql) unless $nothing_new;	
 }
 
 # Close connection

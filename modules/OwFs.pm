@@ -28,7 +28,7 @@ sub read($) {
   my $self = shift;
   my $sensor_id_and_value = shift;
   my $string = "";
-  open FILE, "$self->{OW_DIR}/$sensor_id_and_value" or die "Couldn't open file: $!";
+  open FILE, "$self->{OW_DIR}/$sensor_id_and_value" or die "Couldn't open file: $sensor_id_and_value, $!";
   $string = <FILE>;
   close FILE;
   return $string;
