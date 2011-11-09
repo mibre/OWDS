@@ -18,6 +18,15 @@ my %family_data = (
 	# Declare the subroutines
   sub read_fully($$);
   sub read_value($$$);
+  sub ping($$);
+
+  sub ping($$){
+   my $owserver=shift;
+   my $ow_id = shift;
+   my $dir = $owserver->dir('');
+
+   return ($dir =~ m/$ow_id/g);
+  }
 
   sub read_fully($$) {
    my $owserver=shift;

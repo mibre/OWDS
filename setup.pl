@@ -112,15 +112,16 @@ sub add_sensor {
     print "Adding sensor: " . $sensor_id . "[$sensor_value]\n";
     my $sql = "INSERT INTO SENSORS (name,date_added,one_wire_id) values ('$sensor_location', current_timestamp,'$sensor_id')";
     $dbh->do($sql);
-    sensor_property($sensor_id,"name");
-    sensor_property($sensor_id,"description");
+#    sensor_property($sensor_id,"name");
     sensor_property($sensor_id,"location");
+    sensor_property($sensor_id,"bus_order");
     return 1;
   } else {
-    print "Said hi to old friend $sensor_id [$sensor_value]\n";
-    sensor_property($sensor_id,"name");
-    sensor_property($sensor_id,"description");
+    my $location = OwDB::get_sensor_property($sensor_id, "location");
+    print "Said hi to old friend $sensor_id at $location[$sensor_value]\n";
+#    sensor_property($sensor_id,"name");
     sensor_property($sensor_id,"location");
+    sensor_property($sensor_id,"bus_order");
     return 0;
   }
 }
@@ -129,6 +130,8 @@ sub sensor_property($$) {
  my $sensor_id = shift;
  my $p = shift;
  my $current = OwDB::get_sensor_property($sensor_id, $p);
+ my $p_name = $p;
+ $p_name =~ s/_/ /g;
  print "Current $p; $current\n";
  print "Do you wish to update its $p? [y/N]: ";
  my $upd_c = lc <STDIN>;

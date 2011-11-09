@@ -9,11 +9,7 @@ use modules::Sensor;
 use modules::OwDB;
 
 # Connection to SQLite DB file
-my $dbfile = "./data/owds.db";
-my $dsn = "dbi:SQLite:dbname=$dbfile";
-my $user = "";
-my $pwd = "";
-my $dbh = DBI->connect($dsn, $user, $pwd);
+my $dbh = OwDB::get_handle();
 
 my ($measurement_type, $location, $since, $until);
 $result = GetOptions ("show|measurement_type|mt=s" => \$measurement_type,
@@ -22,10 +18,16 @@ $result = GetOptions ("show|measurement_type|mt=s" => \$measurement_type,
 "to|until|t=s" => \$until,
 );
 
+if ( $since =~ m/midnight|today/i ) {
+ $since = "current_date";
+} elsif ( $since =~ m/yesterday/i ) {
+ $since = "datetime('now', '-1 Day')";
+}
+
 if ($measurement_type eq  "rain") {
   print get_rain($since, $location) . "mm\n";
 } elsif ($measurement_type =~ m/temp/) {
-  print get_temperature($location, $type, $since, $until) . "\n";
+  print get_temperature($location, $measurement_type, $since, $until) . "\n";
 } 
 
 sub get_temperature($$$$) {

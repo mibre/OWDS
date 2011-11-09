@@ -10,12 +10,24 @@ our @ISA = qw(Exporter);
 
 sub read($);
 sub ow_dir($);
+sub dir($);
 
 sub new {
  my $self  = {};
  $self->{OW_DIR}   = undef;
  bless($self);
  return $self;
+}
+
+sub dir($) {
+ my $self = shift;
+ my $dir = shift;
+ my $ret = "";
+ $dir = $self->{OW_DIR} . $dir;
+ foreach my $file (<$dir/*>) {
+  $ret = $ret . "," . $file;
+ }
+ return $ret;
 }
 
 sub ow_dir($) {
